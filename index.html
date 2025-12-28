@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f8f0ff">
+    <title>🌸 Мой Планировщик</title>
+    
+    <!-- PWA мета-теги для iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Мой Планировщик">
+    
+    <!-- Манифест PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Иконки для iOS -->
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    
+    <!-- Стили -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Приветственный экран -->
+    <div id="welcome-screen" class="welcome-screen active">
+        <div class="welcome-content">
+            <div class="welcome-icon">
+                <div class="icon-placeholder">
+                    <!-- Здесь будет твоя иконка из icons/icon-512.png -->
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            <h1>🌸 Мой Персональный Планировщик</h1>
+            <p class="welcome-subtitle">Все твои дела, мысли и напоминания в одном месте</p>
+            <div class="welcome-features">
+                <div class="feature">
+                    <i class="fas fa-lock"></i>
+                    <span>Конфиденциально</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>На домашнем экране</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-palette"></i>
+                    <span>Под тебя</span>
+                </div>
+            </div>
+            <button id="start-btn" class="btn-primary welcome-btn">
+                Начать планирование
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <p class="welcome-hint">Добавь на домашний экран для быстрого доступа</p>
+        </div>
+    </div>
+
+    <!-- Основное приложение (скрыто вначале) -->
+    <div id="app" class="app-container">
+        <!-- Шапка -->
+        <header class="app-header">
+            <div class="header-main">
+                <button id="menu-toggle" class="icon-btn menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-title">
+                    <h1>Мой Планировщик</h1>
+                    <div class="date-display" id="current-date"></div>
+                </div>
+                <button id="add-task-float" class="icon-btn add-btn">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            
+            <!-- Навигация -->
+            <nav class="tabs-nav">
+                <div class="tabs-container">
+                    <button class="tab-btn active" data-tab="today">
+                        <i class="fas fa-sun"></i>
+                        <span>Сегодня</span>
+                    </button>
+                    <button class="tab-btn" data-tab="tasks">
+                        <i class="fas fa-tasks"></i>
+                        <span>Все задачи</span>
+                    </button>
+                    <button class="tab-btn" data-tab="reminders">
+                        <i class="fas fa-bell"></i>
+                        <span>Напоминания</span>
+                    </button>
+                    <button class="tab-btn" data-tab="questions">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Вопросы</span>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Основное содержание -->
+        <main class="app-main">
+            <!-- Сегодняшние задачи -->
+            <section id="today-tab" class="tab-content active">
+                <div class="day-overview">
+                    <div class="day-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="today-total">0</span>
+                            <span class="stat-label">задач</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="today-done">0</span>
+                            <span class="stat-label">выполнено</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="today-remaining">0</span>
+                            <span class="stat-label">осталось</span>
+                        </div>
+                    </div>
+                    
+                    <div class="motivation-banner" id="motivation-banner">
+                        <i class="fas fa-sparkles"></i>
+                        <span>Сегодня прекрасный день для маленьких шагов!</span>
+                    </div>
+                </div>
+                
+                <!-- Быстрое добавление -->
+                <div class="quick-add-container">
+                    <div class="quick-add">
+                        <input type="text" id="quick-task-input" 
+                               placeholder="Что нужно сделать сегодня?">
+                        <button id="quick-add-btn" class="btn-icon add-icon">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <button id="show-advanced" class="btn-text">
+                        <i class="fas fa-edit"></i> Подробно
+                    </button>
+                </div>
+                
+                <!-- Фильтры -->
+                <div class="filters-container">
+                    <div class="filters-scroll">
+                        <button class="filter-btn active" data-filter="all">Все</button>
+                        <button class="filter-btn" data-filter="work">
+                            <i class="fas fa-briefcase"></i> Работа
+                        </button>
+                        <button class="filter-btn" data-filter="personal">
+                            <i class="fas fa-heart"></i> Личное
+                        </button>
+                        <button class="filter-btn" data-filter="health">
+                            <i class="fas fa-apple-alt"></i> Здоровье
+                        </button>
+                        <button class="filter-btn" data-filter="ideas">
+                            <i class="fas fa-lightbulb"></i> Идеи
+                        </button>
+                        <button class="filter-btn" data-filter="family">
+                            <i class="fas fa-users"></i> Семья
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Список задач -->
+                <div class="tasks-container" id="today-tasks-container">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3>Пока нет задач на сегодня</h3>
+                        <p>Добавь первую задачу или выбери шаблон</p>
+                        <button class="btn-secondary" id="use-template-btn">
+                            <i class="fas fa-magic"></i> Использовать шаблон
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Все задачи -->
+            <section id="tasks-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>Все задачи</h2>
+                    <div class="header-actions">
+                        <button class="btn-icon" id="sort-tasks">
+                            <i class="fas fa-sort-amount-down"></i>
+                        </button>
+                        <button class="btn-icon" id="search-tasks">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="search-box" id="task-search-box" style="display: none;">
+                    <input type="text" id="task-search-input" placeholder="Поиск задач...">
+                    <button class="btn-icon" id="close-search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="all-tasks-container" id="all-tasks-container">
+                    <!-- Задачи будут здесь -->
+                </div>
+            </section>
+
+            <!-- Напоминания -->
+            <section id="reminders-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>Напоминания</h2>
+                    <button class="btn-primary" id="enable-notifications-btn">
+                        <i class="fas fa-bell"></i> Разрешить уведомления
+                    </button>
+                </div>
+                
+                <div class="reminder-form card">
+                    <h3>Новое напоминание</h3>
+                    <input type="text" id="reminder-text" 
+                           placeholder="О чем напомнить?">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reminder-date"><i class="far fa-calendar"></i> Дата</label>
+                            <input type="date" id="reminder-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="reminder-time"><i class="far fa-clock"></i> Время</label>
+                            <input type="time" id="reminder-time">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Повтор</label>
+                        <div class="repeat-options">
+                            <button class="repeat-option" data-repeat="none">Никогда</button>
+                            <button class="repeat-option" data-repeat="daily">Ежедневно</button>
+                            <button class="repeat-option" data-repeat="weekly">Еженедельно</button>
+                            <button class="repeat-option" data-repeat="monthly">Ежемесячно</button>
+                        </div>
+                    </div>
+                    
+                    <button id="add-reminder-btn" class="btn-primary">
+                        <i class="fas fa-plus"></i> Добавить напоминание
+                    </button>
+                </div>
+                
+                <div class="reminders-list" id="reminders-list">
+                    <!-- Напоминания будут здесь -->
+                </div>
+            </section>
+
+            <!-- Вопросы -->
+            <section id="questions-tab" class="tab-content">
+                <div class="questions-header">
+                    <h2>Мои вопросы для саморефлексии</h2>
+                    <p>Отвечай ежедневно, чтобы лучше понимать себя</p>
+                </div>
+                
+                <div class="questions-controls">
+                    <button class="btn-secondary active" data-question-type="today">
+                        Сегодня
+                    </button>
+                    <button class="btn-secondary" data-question-type="morning">
+                        Утренние
+                    </button>
+                    <button class="btn-secondary" data-question-type="evening">
+                        Вечерние
+                    </button>
+                    <button class="btn-secondary" data-question-type="weekly">
+                        Недельные
+                    </button>
+                </div>
+                
+                <div class="questions-container" id="questions-container">
+                    <!-- Вопросы будут здесь -->
+                </div>
+                
+                <div class="answers-history">
+                    <h3><i class="fas fa-history"></i> История ответов</h3>
+                    <div class="history-list" id="answers-history">
+                        <!-- История ответов -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Боковое меню -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3>Мой Планировщик</h3>
+                        <p>Только для тебя</p>
+                    </div>
+                </div>
+                <button id="close-sidebar" class="icon-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-item active" data-section="today">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="templates">
+                    <i class="fas fa-magic"></i>
+                    <span>Шаблоны</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="categories">
+                    <i class="fas fa-tags"></i>
+                    <span>Категории</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="statistics">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Статистика</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Настройки</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Помощь</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn-secondary" id="export-data">
+                    <i class="fas fa-download"></i> Экспорт данных
+                </button>
+                <button class="btn-text" id="share-app">
+                    <i class="fas fa-share-alt"></i> Поделиться
+                </button>
+            </div>
+        </aside>
+
+        <!-- Модальное окно добавления задачи -->
+        <div id="task-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Новая задача</h2>
+                    <button class="icon-btn close-modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" id="task-title" 
+                               placeholder="Название задачи" autofocus>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea id="task-description" 
+                                  placeholder="Описание (необязательно)" 
+                                  rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="far fa-calendar"></i> Дата</label>
+                            <input type="date" id="task-date">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="far fa-clock"></i> Время</label>
+                            <input type="time" id="task-time">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Категория</label>
+                        <div class="categories-selector">
+                            <button class="category-option active" 
+                                    data-category="personal" 
+                                    style="background-color: #FFD6E0;">
+                                <i class="fas fa-heart"></i> Личное
+                            </button>
+                            <button class="category-option" 
+                                    data-category="work" 
+                                    style="background-color: #D6F0FF;">
+                                <i class="fas fa-briefcase"></i> Работа
+                            </button>
+                            <button class="category-option" 
+                                    data-category="health" 
+                                    style="background-color: #D6FFDD;">
+                                <i class="fas fa-apple-alt"></i> Здоровье
+                            </button>
+                            <button class="category-option" 
+                                    data-category="ideas" 
+                                    style="background-color: #F0D6FF;">
+                                <i class="fas fa-lightbulb"></i> Идеи
+                            </button>
+                            <button class="category-option" 
+                                    data-category="family" 
+                                    style="background-color: #FFF5D6;">
+                                <i class="fas fa-users"></i> Семья
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Приоритет</label>
+                        <div class="priority-selector">
+                            <button class="priority-option" data-priority="low">
+                                <span class="priority-dot" style="background: #D6FFDD;"></span>
+                                Низкий
+                            </button>
+                            <button class="priority-option active" data-priority="medium">
+                                <span class="priority-dot" style="background: #FFEED6;"></span>
+                                Средний
+                            </button>
+                            <button class="priority-option" data-priority="high">
+                                <span class="priority-dot" style="background: #FFD6E0;"></span>
+                                Высокий
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="set-reminder">
+                        <label for="set-reminder">
+                            <i class="fas fa-bell"></i> Установить напоминание
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Отмена</button>
+                    <button id="save-task-btn" class="btn-primary">
+                        <i class="fas fa-save"></i> Сохранить задачу
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Футер -->
+        <footer class="app-footer">
+            <div class="footer-info">
+                <p id="storage-info">Данные сохранены локально</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="storage-progress"></div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Уведомление -->
+        <div id="notification" class="notification">
+            <div class="notification-content">
+                <i class="fas fa-check-circle"></i>
+                <span id="notification-text"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Затемнение для модальных окон -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Скрипты -->
+    <script src="app.js"></script>
+    
+    <!-- Инициализация Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker зарегистрирован:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Ошибка регистрации ServiceWorker:', error);
+                    });
+            });
+        }
+        
+        // Проверка установки на домашний экран
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('Приложение можно установить на домашний экран');
+            // Можно показать кнопку установки
+        });
+        
+        // Проверка, запущено ли как PWA
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            console.log('Запущено как PWA');
+        }
+    </script>
+</body>
+</html>
