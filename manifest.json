@@ -1,0 +1,108 @@
+{
+  "name": "🌸 Мой Планировщик",
+  "short_name": "Планировщик",
+  "description": "Персональный планировщик для твоих дел, мыслей и напоминаний",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FAF7FF",
+  "theme_color": "#E6D6FF",
+  "orientation": "portrait",
+  "scope": "./",
+  "lang": "ru",
+  
+  "icons": [
+    {
+      "src": "./icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  
+  "categories": ["productivity", "lifestyle", "utilities"],
+  
+  "shortcuts": [
+    {
+      "name": "Добавить задачу",
+      "short_name": "Добавить",
+      "description": "Быстро добавить новую задачу",
+      "url": "./?add-task",
+      "icons": [
+        {
+          "src": "./icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Мои вопросы",
+      "short_name": "Вопросы",
+      "description": "Вопросы для саморефлексии",
+      "url": "./?questions",
+      "icons": [
+        {
+          "src": "./icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Сегодняшние задачи",
+      "short_name": "Сегодня",
+      "description": "Посмотреть задачи на сегодня",
+      "url": "./?today",
+      "icons": [
+        {
+          "src": "./icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  
+  "screenshots": [
+    {
+      "src": "./screenshots/screenshot1.png",
+      "sizes": "1284x2778",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Главный экран"
+    }
+  ]
+}
