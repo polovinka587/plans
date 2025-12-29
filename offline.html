@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оффлайн режим | Мой Планировщик</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #FAF7FF 0%, #F0EBFF 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #5A4E6B;
+        }
+        
+        .offline-container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .offline-icon {
+            font-size: 4rem;
+            color: #E6D6FF;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #8A7FA3;
+        }
+        
+        .features {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(166, 152, 199, 0.1);
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .feature:last-child {
+            margin-bottom: 0;
+        }
+        
+        .feature i {
+            color: #E6D6FF;
+            font-size: 1.2rem;
+            width: 24px;
+        }
+        
+        button {
+            background: #E6D6FF;
+            color: #5A4E6B;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 200px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(166, 152, 199, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <i class="fas fa-cloud-slash"></i>
+        </div>
+        
+        <h1>Вы в оффлайн-режиме</h1>
+        
+        <p>Не беспокойтесь! Ваш планировщик продолжит работу, а все данные сохранятся на устройстве.</p>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Задачи и напоминания доступны</span>
+            </div>
+            <div class="feature">
+                <i class="fas fa-edit"></i>
+                <span>Можно добавлять новые задачи</span>
+            </div>
+            <div class="feature">
+                <i class="fas fa-sync-alt"></i>
+                <span>Данные синхронизируются при подключении</span>
+            </div>
+        </div>
+        
+        <button onclick="window.location.reload()">
+            <i class="fas fa-redo"></i> Обновить страницу
+        </button>
+    </div>
+</body>
+</html>
